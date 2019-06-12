@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'django_extensions'
+    'django_extensions',
+    'crispy_forms',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,8 @@ ROOT_URLCONF = 'classproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #'DIRS': ['onlineapp/template_clone', 'templates'],
+        'DIRS':[],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +73,11 @@ TEMPLATES = [
         },
     },
 ]
+
+
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(BASE_DIR)),
+)
 
 WSGI_APPLICATION = 'classproject.wsgi.application'
 
@@ -142,3 +150,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 INTERNAL_IPS = ['127.0.0.1'] #for debug-toolbar
+
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ]
+# }

@@ -1,0 +1,40 @@
+from django.shortcuts import render
+
+from django.http import HttpResponse
+from . models import *
+from .models import *
+# Create your views here.
+def hello_world(request): #these methods are called as request handlers, so they want request object
+    #html = "<html><body><h1>Hello world</h1></body></html>"
+    #print(request)
+    #return HttpResponse(html)
+    file = open("./onlineapp/print_hello.html","r")
+    html = file.read()
+    file.close()
+    return HttpResponse(html)
+    #return render(request, "./onlineapp/print_hello.html")
+    #return render(request, "onlineapp/print_hello.html")
+
+#extract header info and return it, CURL is used to do it using cmd line, so postman used do it ie adding headers to url
+def foo(request):
+    headers = request.headers
+    return HttpResponse(headers['hello'])
+
+def college_view(request):
+    pass
+    # college = College.objects.values_list('name','acronym')
+    # html = "<html><body><table border='2'><tr><th>College</th><th>Acronym</th></tr>"
+    # for i in college:
+    #     html+="<tr><td>"+i[0]+"</td><td>"+i[1]+"</td></tr>"
+    # html+="</table>"
+    # return HttpResponse(html)
+    colleges = College.objects.values('id','name','acronym')
+    #use jinja templating
+    return render(request,"onlineapp/colleges.html",{'colleges' : colleges})
+
+def students_view(request, id):
+    students = Student.objects.filter(college__id=id)
+    return render(request,"onlineapp/students.html",{'students':students})
+
+
+

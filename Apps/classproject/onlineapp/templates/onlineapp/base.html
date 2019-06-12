@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MRND SMS</title>
+    {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'onlineapp/css/bulma.css' %}">
+</head>
+<body>
+<section class="hero is-primary is-large is-bold" >
+  <!-- Hero head: will stick at the top -->
+
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+       <a>
+            <img src="{% static 'onlineapp/images/mrnd.png' %}"  alt="Logo">
+          </a>
+      <br>
+      <h1 class="title">
+        MRND Student Management System
+      </h1>
+
+      <a class="button is-danger is-inverted is-outlined is-rounded is-medium" href="{%url 'signup' %}">
+                 Signup
+              </a>
+              <a class="button is-danger is-inverted is-outlined is-rounded is-medium" href="{%url 'login' %}">
+                 Login
+              </a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

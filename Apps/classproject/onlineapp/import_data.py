@@ -17,9 +17,7 @@ from onlineapp.models import *
 
 def import_clg():
     workbook = openpyxl.load_workbook("students.xlsx")
-
     worksheet = workbook.get_sheet_by_name("Colleges")
-
     flag = 0
     for row in worksheet.rows:
         if not flag:

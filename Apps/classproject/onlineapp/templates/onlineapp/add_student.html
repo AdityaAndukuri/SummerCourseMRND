@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'onlineapp/css/bulma.css' %}">
+</head>
+<body>
+<section class="hero is-primary is-small is-bold" >
+  <!-- Hero head: will stick at the top -->
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="{% url 'colleges_list' %}">
+            <img src="{% static 'onlineapp/images/mrnd.png' %}"  alt="Logo">
+          </a>
+
+        </div>
+        <div id="navbarMenuHeroA" class="navbar-menu">
+          <div class="navbar-end">
+              {% if user.is_authenticated %}
+              <a class="navbar-item" href="{%url 'logout' %}">
+                 Logout
+              </a>
+              {% else %}
+              <a class="navbar-item" href="{%url 'signup' %}">
+                 Signup
+              </a>
+              <a class="navbar-item" href="{%url 'login' %}">
+                 Login
+              </a>
+              {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">
+        MRND S.M.S
+      </h1>
+    </div>
+  </div>
+
+
+</section>
+<center>
+<div class ="box" style="width:60%;margin:7%;">
+<div class="container" style="width:50%;">
+    {% if s_form.errors or m_form.errors%}
+    <article class="message is-danger">
+  <div class="message-header">
+    <p>Errors</p>
+  </div>
+  <div class="message-body">
+    {{s_form.errors}}
+    {{m_form.errors}}
+  </div>
+</article>
+    {% endif %}
+<form method="post" class="form">
+    <legend class="title"> Student Details</legend>
+    <fieldset>
+    {% csrf_token %}
+      <!--  <div class="field">
+    {{s_form.name}}
+            </div>
+        <div class="field">
+    {{s_form.email}}
+        </div>
+            <div class="field">
+    {{s_form.db_folder}}
+            </div>
+                <div class="field">
+    {{m_form.problem1}}
+                </div>
+         <div class="field">
+    {{m_form.problem2}}
+                </div>
+         <div class="field">
+    {{m_form.problem3}}
+                </div>
+         <div class="field">
+    {{m_form.problem4}}
+                </div>
+         <div class="field">
+    {{s_form.dropped_out}}
+             {{s_form.dropped_out.label}}
+                </div>-->
+        {{s_form}}
+        <br>
+        <br>
+        {{m_form}}
+     <button class="button is-primary is-outlined" style="margin-left:20px;margin-top:20px;float:left;" type="submit">Submit</button>
+    </fieldset>
+</form>
+</div>
+</div>
+</center>
+</body>
+</html>
