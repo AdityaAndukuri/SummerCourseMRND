@@ -25,7 +25,7 @@ SECRET_KEY = 'p@n@9be$p5m=^#r_tj*u5)h#sbr)vm=m6kp(y-+w4v_!mdm0_x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["sma", "localhost", '127.0.0.1'] #sma is student management app , the  name given to nginx so the server believes it to be valid host
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'crispy_forms',
     'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -157,4 +158,24 @@ INTERNAL_IPS = ['127.0.0.1'] #for debug-toolbar
 #     'DEFAULT_PERMISSION_CLASSES': [
 #         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
 #     ]
+# }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'onlineapp.models.BearerAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+#
+# LOGGING = {
+#     'version':'1.0',
+#    # 'disable'
 # }

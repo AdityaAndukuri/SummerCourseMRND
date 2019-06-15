@@ -5,12 +5,20 @@ from onlineapp.models import Student
 from onlineapp.serializers import *
 from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from onlineapp.models import BearerAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 # @api_view(['GET','POST'])
 # def students_list(request, cid, **kwargs):
 #     pass
 
 class RestStudentView(APIView):
+    authentication_classes = (JWTAuthentication,BearerAuthentication, TokenAuthentication, BasicAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+
     def get(self,request,**kwargs):
         if kwargs:
             if ('cid' in kwargs) and not ('sid' in kwargs):
@@ -58,7 +66,7 @@ class RestStudentView(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    #
+
     # def get(self, request, **kwargs):
     #     if 'id' in kwargs:
     #         students = Student.objects.filter(id=kwargs['id'])

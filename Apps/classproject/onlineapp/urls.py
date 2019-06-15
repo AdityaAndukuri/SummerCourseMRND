@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt import views as jwt_views
 from .views import *
 
 urlpatterns = [
@@ -24,11 +26,18 @@ urlpatterns = [
     # path('api/v1/colleges/',rest_colleges.college_list,name="rest_college_list"),
     # path('api/v1/colleges/<int:id>',rest_colleges.college_details),
     path('api/v1/colleges/', RestCollegeView.as_view(),name="rest_college_list"),
-    path('api/v1/colleges/<int:id>',RestCollegeView.as_view(),name="rest_college_details"),
+    path('api/v1/colleges/<int:id>/',RestCollegeView.as_view(),name="rest_college_details"),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/colleges/<int:cid>/students/<int:sid>', RestStudentView.as_view(),name="rest_students_list"),
     path('api/v1/colleges/<int:cid>/students/', RestStudentView.as_view(),name="rest_students_details"),
-    #path('api/v1/colleges/<int:id>',RestCollegeView.as_view(),name="rest_college_details"),
+    #path('api/v1/colleges/<int:id>/',RestCollegeView.as_view(),name="rest_college_details"),
+
+    path('test/',my_firts_view,name="test"),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'), #to get token key
+    path('custom-api-token-auth/', CustomAuthToken.as_view()),
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+
 
 
 ]

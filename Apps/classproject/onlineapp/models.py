@@ -1,5 +1,5 @@
 from django.db import models
-
+from rest_framework.authentication import TokenAuthentication
 # Create your models here.
 
 class College(models.Model):
@@ -38,5 +38,18 @@ class MockTest1(models.Model):
 
 
 class Teacher(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=42)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
+
+
+
+class BearerAuthentication(TokenAuthentication, models.Model):
+    '''
+    Simple token based authentication using utvsapitoken.
+
+    Clients should authenticate by passing the token key in the 'Authorization'
+    HTTP header, prepended with the string 'Bearer '.  For example:
+
+    Authorization: Bearer 956e252a-513c-48c5-92dd-bfddc364e812
+    '''
+    keyword = 'Bearer'

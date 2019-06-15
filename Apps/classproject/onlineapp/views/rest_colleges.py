@@ -5,6 +5,10 @@ from onlineapp.models import College
 from onlineapp.serializers import *
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from onlineapp.models import BearerAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # @api_view(['GET','POST'])
 # def college_list(request):
@@ -51,8 +55,22 @@ from rest_framework.views import APIView
 #         college.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+#
+# {
+#     "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU2MDU4NzQ4MSwianRpIjoiMDEzYWFkMTYyMzJkNDhiZDkxNThhMGUyNzk1NjUxNGYiLCJ1c2VyX2lkIjoxfQ.D_JkEVKYf1uvJw030O8u_goKArqypnyjSJGq4Fn2bVE",
+#     "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTYwNTAxMzgxLCJqdGkiOiJmM2MwODA1Y2U4ZDM0MDExYmU3Njc3ZjQxNTljZWNkNCIsInVzZXJfaWQiOjF9.TpwMwYxqV-DG7rN-U-x8c8IRe346azhLHCcSBb5vgWw"
+# }
+
 class RestCollegeView(APIView):
-    def get(self, request, **kwargs):
+    #for token authentication use Authorization key and values as Token 3bbe095132489f9b95faea0bf6184e3b034ae0ca in header of request
+    authentication_classes = (JWTAuthentication, BearerAuthentication, TokenAuthentication, BasicAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request,format=None, **kwargs):
+        # content={
+        #     'user':request.user
+        # }
         if kwargs:
             colleges = College.objects.filter(**kwargs)
         else:
