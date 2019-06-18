@@ -1,0 +1,80 @@
+{% extends "cricbuzzapp/base.html" %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+<div class="dropdown show">
+  <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{season}}
+  </a>
+    <a class="btn btn-outline-dark" href="{% url 'season_view' season %}" style="float:right;">Matches List</a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      {% for seasonall in seasons %}
+      <a class="dropdown-item" href="{% url 'points_table' seasonall.year %}">{{seasonall.year}}</a>
+      {% endfor %}
+
+  </div>
+</div>
+</div>
+
+<div class="container">
+<table class="table table-striped ">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Team</th>
+      <th scope="col">Played</th>
+      <th scope="col">Won</th>
+      <th scope="col">Lost</th>
+        <th scope="col">No Result</th>
+        <th scope="col">Points</th>
+    </tr>
+  </thead>
+  <tbody>
+ {% for row in points_table %}
+       <tr>
+           <td>{{row.team}}</td>
+           <td>{{row.played}}</td>
+           <td>{{row.won}}</td>
+           <td>{{row.lost}}</td>
+           <td>{{row.no_result}}</td>
+           <td>{{row.points}}</td>
+       </tr>
+      {% endfor %}
+  </tbody>
+</table>
+    <!--<nav aria-label="...">-->
+  <!--<ul class="pagination">-->
+     <!--{% if rowes.has_previous %}-->
+       <!--<a class="page-link" href="?page=1">&laquo; first</a>-->
+      <!--<a class="page-link" href="?page={{ rowes.previous_page_number }}">Previous</a>-->
+    <!--{% endif %}-->
+    <!--<li class="page-item"><a class="page-link" href="?page=1">1</a></li>-->
+      <!--<li class="page-item"><a class="page-link" href="?page=2">2</a></li>-->
+    <!--<li class="page-item"><a class="page-link" href="?page=2">3</a></li>-->
+    <!--<li class="page-item">-->
+      <!--<a class="page-link" href="#">Next</a>-->
+    <!--</li>-->
+  <!--</ul>-->
+<!--</nav>-->
+<!--<div class="pagination">-->
+    <!--<span class="step-links">-->
+        <!--{% if rowes.has_previous %}-->
+            <!--<a href="?page=1">&laquo; first</a>-->
+            <!--<a href="?page={{ rowes.previous_page_number }}">previous</a>-->
+        <!--{% endif %}-->
+
+        <!--<span class="current">-->
+            <!--Page {{ rowes.number }} of {{ rowes.paginator.num_pages }}.-->
+        <!--</span>-->
+
+        <!--{% if rowes.has_next %}-->
+            <!--<a href="?page={{ rowes.next_page_number }}">next</a>-->
+            <!--<a href="?page={{ rowes.paginator.num_pages }}">last &raquo;</a>-->
+        <!--{% endif %}-->
+    <!--</span>-->
+<!--</div>-->
+
+
+
+</div>
+{% endblock content %}

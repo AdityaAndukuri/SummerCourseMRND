@@ -1,0 +1,36 @@
+{% extends "cricbuzzapp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br>
+<br>
+{% if user_form.errors %}
+<div class="alert alert-danger" role="alert">
+    {{user_form.errors }}
+</div>
+{% endif %}
+
+<div class="content-section" style="padding:20px; width:40%;margin :  0 auto">
+    {% if messages %}
+{% for mesg in messages %}
+<div class="alert alert-{{message.tags}}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+       <form method="post">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Login</legend>
+                {{login_form|crispy}}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-dark" type="submit">Sign In</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Doesn't Have An Account? <a class="ml-2" href="{% url 'signup_view' %}">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}

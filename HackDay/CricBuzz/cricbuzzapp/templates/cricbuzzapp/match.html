@@ -1,0 +1,278 @@
+{% extends "cricbuzzapp/base.html" %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="card">
+  <div class="card-body">
+
+    <h3>{{match.team1}} vs {{match.team2}}</h3>
+    <h3>Venue: {{match.city}}</h3>
+    <h3>Toss: {{match.toss_winner}}</h3>
+    <h3>Decision: {{match.toss_decision}}</h3>
+    <h3>Winner: {{match.winner}} won by
+    {% if match.win_by_runs %}
+      {{match.win_by_runs}} runs
+      {% endif %}
+      {% if match.win_by_wickets %}
+      {{match.win_by_wickets}} wickets</h3>
+      {% endif %}
+    <h3>M.O.M: {{match.player_of_the_match}}</h3>
+ </div>
+</div>
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab">
+            <a class="nav-item nav-link active" id="nav-innings1-tab" data-toggle="tab" href="#nav-innings1" role="tab"
+               aria-controls="nav-home" aria-selected="true">Innings 1</a>
+            <a class="nav-item nav-link" id="nav-innings2-tab" data-toggle="tab" href="#nav-innings2" role="tab"
+               aria-controls="nav-profile" aria-selected="false">Innings 2</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-innings1" role="tabpanel" aria-labelledby="nav-innings1-tab">
+            <table class="table table-striped" style="width:100%;">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Batting Team</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Bowling Team</th>
+                    <th scope="col">Extras</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{inning1.batting_team}}</td>
+                    <td>{{score1.score}}/{{score1.wickets}}</td>
+                    <td>{{inning1.bowling_team}}</td>
+                    <td>{{score1.extra_score}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne" style="width:100%">
+                                Batsmen Statistics
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <table class="table table-striped" style="width:60%; margin:auto;">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Batsman</th>
+                                    <th scope="col">Runs Scored</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for bat in top_3_bat_ing1 %}
+                                <tr>
+                                    <td>{{bat.batsman}}</td>
+                                    <td>{{bat.score}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-expanded="true" aria-controls="collapseTwo" style="width:100%">
+                                Bowler Statistics
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            <table class="table table-striped" style="width:60%; margin:auto;">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Bowler</th>
+                                    <th scope="col">Wickets Taken</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for bowl in top_3_bowl_ing1 %}
+                                <tr>
+                                    <td>{{bowl.over__bowler}}</td>
+                                    <td>{{bowl.wickets}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            {% for over in inning1.over_set.all %}
+            <table class="table table-striped" style="width:100%;">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Over</th>
+                    <th scope="col">Ball</th>
+                    <th scope="col">Batsman</th>
+                    <th scope="col">Non Striker</th>
+                    <th scope="col">Bowler</th>
+                    <th scope="col">Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for delivery in over.delivery_set.all %}
+                <tr>
+
+                    <td>{{over.over_no}}</td>
+                    <td>{{delivery.ball_no}}</td>
+                    <td>{{delivery.batsman}}</td>
+                    <td>{{delivery.non_striker}}</td>
+                    <td>{{over.bowler}}</td>
+                    <td>{{delivery.total_runs}}
+                        {% if delivery.player_dismissal %}
+                        OUT {{delivery.player_dismissal}} ({{delivery.dismissal_kind}})
+                        {%if delivery.fielder %}
+                        by {{delivery.fielder}}
+                        {%endif%}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+        <div class="tab-pane fade show" id="nav-innings2" role="tabpanel" aria-labelledby="nav-innings2-tab">
+            <table class="table table-striped" style="width:100%;">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Batting Team</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Bowling Team</th>
+                    <th scope="col">Extras</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{inning2.batting_team}}</td>
+                    <td>{{score2.score}}/{{score2.wickets}}</td>
+                    <td>{{inning2.bowling_team}}</td>
+                    <td>{{score2.extra_score}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="accordion2">
+                <div class="card">
+                    <div class="card-header" id="headingOne2">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne2"
+                                    aria-expanded="true" aria-controls="collapseOne2" style="width:100%">
+                                Batsmen Statistics
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne2" class="collapse" aria-labelledby="headingOne2" data-parent="#accordion2">
+
+                        <div class="card-body">
+                            <table class="table table-striped" style="width:60%; margin:auto;">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Batsman</th>
+                                    <th scope="col">Runs Scored</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for bat in top_3_bat_ing2 %}
+                                <tr>
+                                    <td>{{bat.batsman}}</td>
+                                    <td>{{bat.score}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo2">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo2"
+                                    aria-expanded="true" aria-controls="collapseTwo2" style="width:100%">
+                                Bowler Statistics
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo2">
+                        <div class="card-body">
+
+                            <table class="table table-striped" style="width:60%; margin:auto;">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Bowler</th>
+                                    <th scope="col">Wickets Taken</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for bowl in top_3_bowl_ing2 %}
+                                <tr>
+                                    <td>{{bowl.over__bowler}}</td>
+                                    <td>{{bowl.wickets}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            {% for over in inning2.over_set.all %}
+            <table class="table table-striped" style="width:100%;">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Over</th>
+                    <th scope="col">Ball</th>
+                    <th scope="col">Batsman</th>
+                    <th scope="col">Non Striker</th>
+                    <th scope="col">Bowler</th>
+                    <th scope="col">Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for delivery in over.delivery_set.all %}
+                <tr>
+
+                    <td>{{over.over_no}}</td>
+                    <td>{{delivery.ball_no}}</td>
+                    <td>{{delivery.batsman}}</td>
+                    <td>{{delivery.non_striker}}</td>
+                    <td>{{over.bowler}}</td>
+                    <td>{{delivery.total_runs}}
+                        {% if delivery.player_dismissal %}
+                        OUT {{delivery.player_dismissal}} ({{delivery.dismissal_kind}})
+                        {%if delivery.fielder %}
+                        by {{delivery.fielder}}
+                        {%endif%}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

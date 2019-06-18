@@ -1,0 +1,100 @@
+{% extends "cricbuzzapp/base.html" %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+<div class="dropdown show">
+  <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{season}}
+  </a>
+    <a class="btn btn-outline-dark" href="{% url 'points_table' season %}" style="float:right;">Points Table</a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      {% for seasonall in seasons %}
+      <a class="dropdown-item" href="{% url 'season_view' seasonall.year %}">{{seasonall.year}}</a>
+      {% endfor %}
+
+  </div>
+</div>
+</div>
+
+<div class="container">
+<table class="table table-striped ">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Team1</th>
+      <th scope="col">Team2</th>
+      <th scope="col">Venue</th>
+      <th scope="col">Toss Result</th>
+        <th scope="col">Decision</th>
+        <th scope="col">Match Result</th>
+        <th scope="col">Match of the Match</th>
+        <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for match in matches %}
+       <tr>
+           <td>{{match.team1}}</td>
+           <td>{{match.team2}}</td>
+           <td>{{match.city}}</td>
+           <td>{{match.toss_winner}}</td>
+           <td>{{match.toss_decision}}</td>
+           <td>{{match.winner}}</td>
+           <td>{{match.player_of_the_match}}</td>
+           <td><a class="btn btn-outline-dark" href="{% url 'match_view' season match.match_id %}">Match Details</a> </td>
+       </tr>
+      {% endfor %}
+  </tbody>
+</table>
+    <!--<nav aria-label="...">-->
+  <!--<ul class="pagination">-->
+     <!--{% if matches.has_previous %}-->
+       <!--<a class="page-link" href="?page=1">&laquo; first</a>-->
+      <!--<a class="page-link" href="?page={{ matches.previous_page_number }}">Previous</a>-->
+    <!--{% endif %}-->
+    <!--<li class="page-item"><a class="page-link" href="?page=1">1</a></li>-->
+      <!--<li class="page-item"><a class="page-link" href="?page=2">2</a></li>-->
+    <!--<li class="page-item"><a class="page-link" href="?page=2">3</a></li>-->
+    <!--<li class="page-item">-->
+      <!--<a class="page-link" href="#">Next</a>-->
+    <!--</li>-->
+  <!--</ul>-->
+<!--</nav>-->
+<!--<div class="pagination">-->
+    <!--<span class="step-links">-->
+        <!--{% if matches.has_previous %}-->
+            <!--<a href="?page=1">&laquo; first</a>-->
+            <!--<a href="?page={{ matches.previous_page_number }}">previous</a>-->
+        <!--{% endif %}-->
+
+        <!--<span class="current">-->
+            <!--Page {{ matches.number }} of {{ matches.paginator.num_pages }}.-->
+        <!--</span>-->
+
+        <!--{% if matches.has_next %}-->
+            <!--<a href="?page={{ matches.next_page_number }}">next</a>-->
+            <!--<a href="?page={{ matches.paginator.num_pages }}">last &raquo;</a>-->
+        <!--{% endif %}-->
+    <!--</span>-->
+<!--</div>-->
+
+
+      {% if matches.has_previous %}
+        <a class="btn btn-outline-dark mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in matches.paginator.page_range %}
+        {% if matches.number == num %}
+          <a class="btn btn-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > matches.number|add:'-3' and num < matches.number|add:'3' %}
+          <a class="btn btn-outline-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if matches.has_next %}
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+</div>
+{% endblock content %}
